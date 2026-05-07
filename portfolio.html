@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marvin Canonigo — General VA & Automation Specialist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #07070f;
+      --panel:     #10102200;
+      --gold:      #c9a84c;
+      --gold-lt:   #f0d78e;
+      --gold-dim:  #8a6f2e;
+      --white:     #f0ece0;
+      --muted:     #6a6a7e;
+      --card:      #13132a;
+      --border:    #2a2a45;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── Custom cursor ── */
+    .cursor {
+      position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
+      width: 10px; height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: transform .1s, width .2s, height .2s, background .2s;
+    }
+    .cursor-ring {
+      position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998;
+      width: 36px; height: 36px;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: transform .15s ease-out, width .25s, height .25s, opacity .2s;
+      opacity: .6;
+    }
+    body:hover .cursor { width: 10px; height: 10px; }
+    a:hover ~ .cursor, button:hover ~ .cursor { width: 18px; height: 18px; background: var(--gold-lt); }
+
+    /* ── Gold grain overlay ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: .025;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 4rem;
+      background: linear-gradient(to bottom, rgba(7,7,15,.95) 0%, transparent 100%);
+      backdrop-filter: blur(4px);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: var(--gold);
+      letter-spacing: .12em;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .78rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      transition: color .25s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0; width: 0; height: 1px;
+      background: var(--gold);
+      transition: width .3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ── SECTIONS ── */
+    section { position: relative; z-index: 1; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      align-items: center;
+      padding: 0 4rem;
+      gap: 4rem;
+      overflow: hidden;
+    }
+    .hero-left { padding-top: 6rem; }
+    .hero-tag {
+      display: inline-block;
+      font-size: .7rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold-dim);
+      padding: .35rem 1rem;
+      margin-bottom: 2rem;
+      animation: fadeUp .8s ease both;
+    }
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 7vw, 6.5rem);
+      line-height: .95;
+      letter-spacing: -.01em;
+      margin-bottom: 1.2rem;
+      animation: fadeUp .9s .1s ease both;
+    }
+    .hero-name span { color: var(--gold); display: block; }
+    .hero-title {
+      font-size: .85rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.8rem;
+      animation: fadeUp .9s .2s ease both;
+    }
+    .hero-bio {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #9090a8;
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      animation: fadeUp .9s .3s ease both;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .85rem 2.2rem;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      text-decoration: none;
+      font-size: .8rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      transition: background .3s, color .3s;
+      animation: fadeUp .9s .4s ease both;
+    }
+    .hero-cta:hover { background: var(--gold); color: var(--bg); }
+    .hero-cta svg { width: 14px; height: 14px; }
+
+    /* Hero photo */
+    .hero-right {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeUp 1s .2s ease both;
+    }
+    .photo-frame {
+      position: relative;
+      width: 340px;
+      height: 420px;
+    }
+    .photo-frame::before {
+      content: '';
+      position: absolute;
+      inset: -14px;
+      border: 1px solid var(--gold-dim);
+      z-index: 0;
+    }
+    .photo-frame::after {
+      content: '';
+      position: absolute;
+      bottom: -8px; right: -8px;
+      width: 60%; height: 60%;
+      border-right: 2px solid var(--gold);
+      border-bottom: 2px solid var(--gold);
+      z-index: 0;
+    }
+    .photo-frame img {
+      position: relative; z-index: 1;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+      filter: grayscale(15%) contrast(1.05);
+    }
+    .hero-stats {
+      position: absolute;
+      bottom: -2rem; left: -3rem;
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+      z-index: 2;
+    }
+    .stat-chip {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      padding: .6rem 1.1rem;
+      display: flex;
+      align-items: baseline;
+      gap: .5rem;
+    }
+    .stat-chip strong {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--gold);
+    }
+    .stat-chip span { font-size: .7rem; color: var(--muted); letter-spacing: .08em; }
+
+    /* Gold line decorations */
+    .gold-line-v {
+      position: absolute;
+      top: 0; left: 3rem;
+      width: 1px; height: 100%;
+      background: linear-gradient(to bottom, transparent, var(--gold-dim) 30%, var(--gold-dim) 70%, transparent);
+      opacity: .35;
+    }
+
+    /* ── SECTION TITLES ── */
+    .sec-header {
+      text-align: center;
+      padding: 6rem 4rem 3rem;
+    }
+    .sec-tag {
+      display: inline-block;
+      font-size: .68rem;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: .75rem;
+    }
+    .sec-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--gold-lt);
+      line-height: 1.1;
+    }
+    .sec-rule {
+      width: 60px; height: 1px;
+      background: var(--gold);
+      margin: 1.2rem auto 0;
+    }
+
+    /* ── ABOUT ── */
+    #about .inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 4rem 6rem;
+      align-items: start;
+    }
+    .about-text p {
+      font-size: 1rem;
+      line-height: 1.9;
+      color: #9090a8;
+      margin-bottom: 1.4rem;
+    }
+    .about-text p strong { color: var(--gold-lt); font-weight: 700; }
+    .contact-list { list-style: none; margin-top: 2rem; }
+    .contact-list li {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: .7rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: .88rem;
+      color: var(--muted);
+    }
+    .contact-list li .icon { color: var(--gold); font-size: 1rem; width: 20px; }
+    .contact-list li a { color: var(--white); text-decoration: none; transition: color .2s; }
+    .contact-list li a:hover { color: var(--gold); }
+
+    .what-i-do { }
+    .wid-item {
+      display: flex;
+      gap: 1.2rem;
+      margin-bottom: 1.8rem;
+      align-items: flex-start;
+    }
+    .wid-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--gold-dim);
+      line-height: 1;
+      min-width: 2rem;
+    }
+    .wid-text h4 { font-size: .9rem; color: var(--gold-lt); font-weight: 700; margin-bottom: .3rem; letter-spacing: .05em; }
+    .wid-text p  { font-size: .85rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── SKILLS ── */
+    #skills { padding-bottom: 6rem; }
+    .skills-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+    }
+
+    /* Skill bars */
+    .skill-bars-col h3 {
+      font-size: .7rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+    }
+    .skill-bar { margin-bottom: 1.5rem; }
+    .skill-bar-header { display: flex; justify-content: space-between; margin-bottom: .5rem; }
+    .skill-bar-header span { font-size: .82rem; color: var(--white); }
+    .skill-bar-header em { font-style: normal; font-size: .78rem; color: var(--gold); }
+    .bar-track { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+      border-radius: 2px;
+      width: 0;
+      transition: width 1.2s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* Tool pills */
+    .tools-col h3 {
+      font-size: .7rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+    }
+    .tool-category { margin-bottom: 1.8rem; }
+    .tool-category-label {
+      font-size: .72rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--gold-lt);
+      margin-bottom: .7rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .tool-category-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .pill-group { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .pill {
+      padding: .35rem .9rem;
+      border: 1px solid var(--border);
+      font-size: .75rem;
+      color: var(--muted);
+      letter-spacing: .06em;
+      transition: border-color .25s, color .25s, background .25s;
+      cursor: default;
+    }
+    .pill:hover { border-color: var(--gold); color: var(--gold-lt); background: rgba(201,168,76,.06); }
+
+    /* ── PROJECTS ── */
+    #projects { padding-bottom: 6rem; }
+    .projects-list {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    .project-card {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 2rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      padding: 2.5rem;
+      transition: border-color .3s, transform .3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at top left, rgba(201,168,76,.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .project-card:hover { border-color: var(--gold); transform: translateX(6px); }
+    .project-card.dim { border-left-color: var(--border); }
+    .project-card.dim:hover { border-left-color: var(--gold-dim); transform: translateX(4px); }
+    .project-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      color: var(--gold-dim);
+      line-height: 1;
+      opacity: .5;
+    }
+    .project-body h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      color: var(--gold-lt);
+      margin-bottom: .4rem;
+    }
+    .project-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+      margin-bottom: 1rem;
+    }
+    .stack-tag {
+      font-size: .68rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold-dim);
+      padding: .2rem .6rem;
+    }
+    .project-body p {
+      font-size: .9rem;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+    .project-body ul {
+      list-style: none;
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem 2rem;
+    }
+    .project-body ul li {
+      font-size: .82rem;
+      color: #7070888;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .project-body ul li::before { content: '◆'; color: var(--gold-dim); font-size: .5rem; }
+
+    /* ── EXPERIENCE ── */
+    #experience { padding-bottom: 6rem; }
+    .timeline {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 4rem;
+      position: relative;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: calc(4rem + 15px);
+      top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--gold-dim) 10%, var(--gold-dim) 90%, transparent);
+    }
+    .tl-item {
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 2rem;
+      margin-bottom: 3.5rem;
+      position: relative;
+    }
+    .tl-dot {
+      width: 32px; height: 32px;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 1;
+      flex-shrink: 0;
+    }
+    .tl-dot.dim { border-color: var(--border); }
+    .tl-dot-inner {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+    .tl-dot.dim .tl-dot-inner { background: var(--muted); }
+    .tl-content { padding-top: .25rem; }
+    .tl-date {
+      font-size: .72rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: .4rem;
+    }
+    .tl-dot.dim ~ .tl-content .tl-date { color: var(--muted); }
+    .tl-content h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      color: var(--gold-lt);
+      margin-bottom: .15rem;
+    }
+    .tl-dot.dim ~ .tl-content h3 { color: var(--white); }
+    .tl-content h4 {
+      font-size: .8rem;
+      color: var(--gold);
+      font-weight: 400;
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+    .tl-dot.dim ~ .tl-content h4 { color: var(--muted); }
+    .tl-content ul { list-style: none; }
+    .tl-content ul li {
+      font-size: .88rem;
+      color: var(--muted);
+      line-height: 1.7;
+      padding: .25rem 0;
+      display: flex;
+      gap: .7rem;
+    }
+    .tl-content ul li::before { content: '—'; color: var(--gold-dim); flex-shrink: 0; }
+
+    /* ── CONTACT ── */
+    #contact {
+      padding: 4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    #contact .sec-title { margin-bottom: .5rem; }
+    #contact p {
+      color: var(--muted);
+      font-size: .9rem;
+      max-width: 460px;
+      line-height: 1.7;
+      margin: 1rem 0 2.5rem;
+    }
+    .contact-cards {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 3rem;
+    }
+    .contact-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .4rem;
+      transition: border-color .25s;
+      min-width: 180px;
+      text-decoration: none;
+    }
+    .contact-card:hover { border-color: var(--gold); }
+    .contact-card .cc-icon { font-size: 1.5rem; margin-bottom: .3rem; }
+    .contact-card .cc-label { font-size: .65rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+    .contact-card .cc-val { font-size: .82rem; color: var(--white); }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: .72rem;
+      color: var(--muted);
+      letter-spacing: .08em;
+    }
+    footer span { color: var(--gold); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 2rem; }
+      .nav-links { gap: 1.5rem; }
+      #hero { grid-template-columns: 1fr; padding: 6rem 2rem 4rem; }
+      .hero-right { display: none; }
+      #about .inner { grid-template-columns: 1fr; padding: 0 2rem 4rem; gap: 3rem; }
+      .skills-grid { grid-template-columns: 1fr; padding: 0 2rem; gap: 3rem; }
+      .projects-list { padding: 0 2rem; }
+      .timeline { padding: 0 2rem; }
+      .timeline::before { left: calc(2rem + 15px); }
+      #contact { padding: 4rem 2rem; }
+      .sec-header { padding: 5rem 2rem 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo">MC</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ════════════ HERO ════════════ -->
+  <section id="hero">
+    <div class="gold-line-v"></div>
+    <div class="hero-left">
+      <div class="hero-tag">General VA &amp; Automation Specialist</div>
+      <h1 class="hero-name">
+        Marvin<br>
+        <span>Canonigo</span>
+      </h1>
+      <p class="hero-title">GoHighLevel · Make.com · n8n · CRM Architecture</p>
+      <p class="hero-bio">
+        Results-driven automation specialist with <strong style="color:var(--gold-lt)">5+ years</strong> architecting
+        high-performance GoHighLevel ecosystems that automate manual workflows,
+        enhance lead nurturing, and scale complex business operations.
+      </p>
+      <a href="#contact" class="hero-cta">
+        Let's Work Together
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 7h12M7 1l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <div class="hero-right">
+      <div class="photo-frame">
+        <img src="my_photo.png" alt="Marvin Canonigo" onerror="this.style.background='#1a1a2e';this.style.display='flex';this.alt='MC'" />
+      </div>
+      <div class="hero-stats">
+        <div class="stat-chip"><strong>5+</strong><span>Years Experience</span></div>
+        <div class="stat-chip"><strong>40%</strong><span>Admin Overhead Reduced</span></div>
+        <div class="stat-chip"><strong>A–Z</strong><span>GoHighLevel Mastery</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════ ABOUT ════════════ -->
+  <section id="about">
+    <div class="sec-header">
+      <div class="sec-tag reveal">Who I Am</div>
+      <h2 class="sec-title reveal">About Me</h2>
+      <div class="sec-rule reveal"></div>
+    </div>
+    <div class="inner">
+      <div class="about-text reveal">
+        <p>
+          I'm <strong>Marvin Canonigo</strong>, a results-driven Automation Specialist based in
+          <strong>Davao City, Philippines</strong>. With over 5 years of experience in virtual
+          assistance and business scaling, I specialize in architecting
+          high-performance <strong>GoHighLevel ecosystems</strong> that eliminate manual bottlenecks
+          and supercharge business growth.
+        </p>
+        <p>
+          My work bridges the gap between strategy and execution — I don't just set up tools,
+          I build intelligent systems that connect <strong>Make.com</strong>, <strong>n8n</strong>,
+          third-party APIs, and CRM pipelines into seamless automated workflows.
+        </p>
+        <p>
+          Whether you need a complete GHL white-label setup, a multi-channel campaign,
+          or a custom automation built from scratch — I deliver results that stick.
+        </p>
+        <ul class="contact-list">
+          <li><span class="icon">✉</span> <a href="mailto:marvincanonigo@gmail.com">marvincanonigo@gmail.com</a></li>
+          <li><span class="icon">📞</span> <span>+63 927 132 0736</span></li>
+          <li><span class="icon">📍</span> <span>Davao City, Philippines</span></li>
+          <li><span class="icon">🎓</span> <span>B.S. Secondary Education, Lingig College (2013–2017)</span></li>
+        </ul>
+      </div>
+
+      <div class="what-i-do reveal">
+        <div class="wid-item">
+          <div class="wid-num">01</div>
+          <div class="wid-text">
+            <h4>CRM Architecture</h4>
+            <p>Full GoHighLevel setup including white-label configuration, sub-account management, pipeline design, and structured lead stage tracking.</p>
+          </div>
+        </div>
+        <div class="wid-item">
+          <div class="wid-num">02</div>
+          <div class="wid-text">
+            <h4>Workflow Automation</h4>
+            <p>Complex if/then automation logic via Make.com and n8n — connecting apps, triggering actions, and eliminating repetitive manual tasks.</p>
+          </div>
+        </div>
+        <div class="wid-item">
+          <div class="wid-num">03</div>
+          <div class="wid-text">
+            <h4>Lead Generation</h4>
+            <p>Targeted outreach campaigns, appointment setting scripts, CRM tracking, and data analysis to refine messaging across market segments.</p>
+          </div>
+        </div>
+        <div class="wid-item">
+          <div class="wid-num">04</div>
+          <div class="wid-text">
+            <h4>Multi-Channel Campaigns</h4>
+            <p>High-converting SMS/Email sequences with dynamic custom values, triggered nurture flows, and automated follow-up logic.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════ SKILLS ════════════ -->
+  <section id="skills">
+    <div class="sec-header">
+      <div class="sec-tag reveal">What I Know</div>
+      <h2 class="sec-title reveal">Skills &amp; Tools</h2>
+      <div class="sec-rule reveal"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-bars-col reveal">
+        <h3>Core Proficiency</h3>
+        <div class="skill-bar"><div class="skill-bar-header"><span>GoHighLevel (A-Z)</span><em>98%</em></div><div class="bar-track"><div class="bar-fill" data-width="98"></div></div></div>
+        <div class="skill-bar"><div class="skill-bar-header"><span>Virtual Assistance</span><em>97%</em></div><div class="bar-track"><div class="bar-fill" data-width="97"></div></div></div>
+        <div class="skill-bar"><div class="skill-bar-header"><span>Workflow Automation</span><em>95%</em></div><div class="bar-track"><div class="bar-fill" data-width="95"></div></div></div>
+        <div class="skill-bar"><div class="skill-bar-header"><span>Lead Generation</span><em>93%</em></div><div class="bar-track"><div class="bar-fill" data-width="93"></div></div></div>
+        <div class="skill-bar"><div class="skill-bar-header"><span>Make.com &amp; n8n</span><em>92%</em></div><div class="bar-track"><div class="bar-fill" data-width="92"></div></div></div>
+        <div class="skill-bar"><div class="skill-bar-header"><span>CRM Architecture</span><em>90%</em></div><div class="bar-track"><div class="bar-fill" data-width="90"></div></div></div>
+        <div class="skill-bar"><div class="skill-bar-header"><span>API Integrations</span><em>88%</em></div><div class="bar-track"><div class="bar-fill" data-width="88"></div></div></div>
+        <div class="skill-bar"><div class="skill-bar-header"><span>Funnel Design</span><em>85%</em></div><div class="bar-track"><div class="bar-fill" data-width="85"></div></div></div>
+      </div>
+
+      <div class="tools-col reveal">
+        <h3>Tools I Use</h3>
+
+        <div class="tool-category">
+          <div class="tool-category-label">🤖 AI Tools</div>
+          <div class="pill-group">
+            <span class="pill">Claude</span>
+            <span class="pill">ChatGPT</span>
+            <span class="pill">Gemini</span>
+          </div>
+        </div>
+
+        <div class="tool-category">
+          <div class="tool-category-label">⚙️ Automation</div>
+          <div class="pill-group">
+            <span class="pill">GoHighLevel</span>
+            <span class="pill">n8n</span>
+            <span class="pill">Make.com</span>
+          </div>
+        </div>
+
+        <div class="tool-category">
+          <div class="tool-category-label">📋 Productivity</div>
+          <div class="pill-group">
+            <span class="pill">ClickUp</span>
+            <span class="pill">Notion</span>
+            <span class="pill">Google Docs</span>
+            <span class="pill">Google Sheets</span>
+            <span class="pill">Google Calendar</span>
+          </div>
+        </div>
+
+        <div class="tool-category">
+          <div class="tool-category-label">📱 Social &amp; Content</div>
+          <div class="pill-group">
+            <span class="pill">Facebook</span>
+            <span class="pill">Instagram</span>
+            <span class="pill">YouTube</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════ PROJECTS ════════════ -->
+  <section id="projects">
+    <div class="sec-header">
+      <div class="sec-tag reveal">What I've Built</div>
+      <h2 class="sec-title reveal">Project Showcase</h2>
+      <div class="sec-rule reveal"></div>
+    </div>
+    <div class="projects-list">
+
+      <div class="project-card reveal">
+        <div class="project-num">01</div>
+        <div class="project-body">
+          <h3>Chase's Paradise Ranch — End of Shift Report</h3>
+          <div class="project-stack">
+            <span class="stack-tag">Claude AI</span>
+            <span class="stack-tag">HTML</span>
+            <span class="stack-tag">JavaScript</span>
+            <span class="stack-tag">Automation Tool</span>
+          </div>
+          <p>
+            Designed and built an AI-powered End of Shift Report tool for Chase's Paradise Ranch
+            using Claude. The HTML/JS web app allows ranch staff to log shift information —
+            hours worked, inventory counts, tasks completed, and supervisor sign-off —
+            then auto-generates a formatted report ready to send directly to the group chat.
+          </p>
+          <ul>
+            <li>Auto shift-hour calculation (supports overnight shifts)</li>
+            <li>Full inventory tracking — coconuts, feed, supplies & more</li>
+            <li>Checklist validation before report submission</li>
+            <li>One-click copy-to-clipboard formatted report output</li>
+            <li>Clean mobile-friendly responsive UI</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="project-card dim reveal">
+        <div class="project-num">02</div>
+        <div class="project-body">
+          <h3>GoHighLevel CRM &amp; Automation Systems</h3>
+          <div class="project-stack">
+            <span class="stack-tag">GoHighLevel</span>
+            <span class="stack-tag">Make.com</span>
+            <span class="stack-tag">n8n</span>
+            <span class="stack-tag">API Integrations</span>
+          </div>
+          <p>
+            Designed and deployed end-to-end automated CRM ecosystems for clients using
+            GoHighLevel. Built sophisticated if/then workflow logic for lead follow-ups and
+            appointment booking. Migrated manual client databases into structured GHL pipelines,
+            reducing admin overhead by 40%. Implemented multi-channel SMS/Email marketing
+            campaigns with dynamic custom values and advanced pipeline tracking.
+          </p>
+          <ul>
+            <li>White-label setup &amp; sub-account management</li>
+            <li>40% reduction in admin overhead</li>
+            <li>Multi-channel SMS/Email campaigns with custom values</li>
+            <li>3rd-party API integrations via Make.com &amp; n8n</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════ EXPERIENCE ════════════ -->
+  <section id="experience">
+    <div class="sec-header">
+      <div class="sec-tag reveal">My Journey</div>
+      <h2 class="sec-title reveal">Experience</h2>
+      <div class="sec-rule reveal"></div>
+    </div>
+    <div class="timeline">
+
+      <div class="tl-item reveal">
+        <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+        <div class="tl-content">
+          <div class="tl-date">Jan 2024 – Present</div>
+          <h3>Independent GHL Consultant</h3>
+          <h4>Automation &amp; CRM Specialist</h4>
+          <ul>
+            <li>Designed end-to-end automated systems in GoHighLevel, integrating with Make.com to bridge communication gaps</li>
+            <li>Built complex if/then workflow logic to handle lead follow-ups and appointment booking automatically</li>
+            <li>Migrated manual client databases into structured GHL pipelines, reducing admin overhead by 40%</li>
+            <li>Implemented multi-channel SMS/Email marketing campaigns with dynamic custom values</li>
+            <li>Complete white-label setup, sub-account management, and advanced pipeline tracking</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot dim"><div class="tl-dot-inner"></div></div>
+        <div class="tl-content">
+          <div class="tl-date">Jan 2019 – Dec 2023</div>
+          <h3>Lead Gen &amp; Appointment Setting</h3>
+          <h4>Virtual Specialist</h4>
+          <ul>
+            <li>Executed targeted lead generation campaigns that consistently reached and exceeded booking targets</li>
+            <li>Optimized appointment setting scripts and CRM tracking to ensure no lead fell through the cracks</li>
+            <li>Analyzed outreach data to refine messaging strategies for different market segments</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════ CONTACT ════════════ -->
+  <section id="contact">
+    <div class="sec-tag reveal">Get In Touch</div>
+    <h2 class="sec-title reveal">Let's Work Together</h2>
+    <p class="reveal">
+      Ready to automate your business and scale smarter?
+      Reach out and let's build something powerful.
+    </p>
+    <div class="contact-cards reveal">
+      <a href="mailto:marvincanonigo@gmail.com" class="contact-card">
+        <div class="cc-icon">✉</div>
+        <div class="cc-label">Email</div>
+        <div class="cc-val">marvincanonigo@gmail.com</div>
+      </a>
+      <a href="tel:+639271320736" class="contact-card">
+        <div class="cc-icon">📞</div>
+        <div class="cc-label">Phone</div>
+        <div class="cc-val">+63 927 132 0736</div>
+      </a>
+      <div class="contact-card">
+        <div class="cc-icon">📍</div>
+        <div class="cc-label">Location</div>
+        <div class="cc-val">Davao City, Philippines</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 <span>Marvin Canonigo</span> · General VA &amp; Automation Specialist · Davao City, Philippines</p>
+  </footer>
+
+  <script>
+    // ── Custom cursor ──
+    const cursor = document.getElementById('cursor');
+    const ring   = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx+'px'; cursor.style.top = my+'px'; });
+    (function animRing() {
+      rx += (mx - rx) * .12; ry += (my - ry) * .12;
+      ring.style.left = rx+'px'; ring.style.top = ry+'px';
+      requestAnimationFrame(animRing);
+    })();
+
+    // ── Scroll reveal ──
+    const revealEls = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => obs.observe(el));
+
+    // ── Skill bar animation ──
+    const barObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('.bar-fill').forEach(bar => {
+            bar.style.width = bar.dataset.width + '%';
+          });
+          barObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.skill-bars-col').forEach(el => barObs.observe(el));
+
+    // ── Active nav highlight ──
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+      navLinks.forEach(a => {
+        a.style.color = a.getAttribute('href') === '#'+current ? 'var(--gold)' : '';
+      });
+    });
+  </script>
+</body>
+</html>
